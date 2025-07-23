@@ -6,14 +6,14 @@ import Layout from './components/layout/layout';
 import Login from './pages/auth/Login';
 import AdminDashboard from './pages/Admin/Dashboard';
 import CompanyDashboard from './pages/company/Dashboard';
-import DriverDashboard from './pages/driver/Dashboard';
+import DriverDashboard from './pages/Driver/Dashboard';
 
-import AddCompany from './pages/admin/companies/AddCompany';
-import ViewCompanies from './pages/admin/companies/ViewCompanies';
-import EditCompany from './pages/admin/companies/EditCompany';
+import AddCompany from './pages/Admin/companies/AddCompany';
+import ViewCompanies from './pages/Admin/companies/ViewCompanies';
+import EditCompany from './pages/Admin/companies/EditCompany';
 
-import AddDriver from './pages/admin/drivers/AddDriver';
-import ViewDrivers from './pages/admin/drivers/ViewDrivers';
+import AddDriver from './pages/Admin/drivers/AddDriver';
+import ViewDrivers from './pages/Admin/drivers/ViewDrivers';
 import EditDriver from './pages/admin/drivers/EditDriver';
 import CreateNewUser from './pages/Admin/createNewUser'
 
