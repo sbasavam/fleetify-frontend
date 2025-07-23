@@ -4,7 +4,7 @@ import { ROLES } from './constants/role';
 
 import Layout from './components/layout/layout';
 import Login from './pages/auth/Login';
-import AdminDashboard from './pages/admin/Dashboard';
+import AdminDashboard from './pages/Admin/Dashboard';
 import CompanyDashboard from './pages/company/Dashboard';
 import DriverDashboard from './pages/driver/Dashboard';
 
