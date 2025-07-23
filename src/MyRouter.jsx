@@ -14,7 +14,7 @@ import EditCompany from './pages/Admin/companies/EditCompany';
 
 import AddDriver from './pages/Admin/drivers/AddDriver';
 import ViewDrivers from './pages/Admin/drivers/ViewDrivers';
-import EditDriver from './pages/admin/drivers/EditDriver';
+import EditDriver from './pages/Admin/drivers/EditDriver';
 import CreateNewUser from './pages/Admin/createNewUser'
 
 import NotFound from './pages/NotFound';
