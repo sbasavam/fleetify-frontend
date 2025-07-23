@@ -38,7 +38,6 @@ const AddDriverForm = () => {
 
   const validate = () => {
     const newErrors = {};
-
     if (!formData.firstName) newErrors.firstName = 'First name is required';
     if (!formData.lastName) newErrors.lastName = 'Last name is required';
     if (!formData.email) {
@@ -98,10 +97,13 @@ const AddDriverForm = () => {
   };
 
   return (
-    <div className="px-2">
-      <h1 className="text-2xl font-bold mb-6 text-gray-800">Add New Driver</h1>
-      <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="flex justify-center px-4 py-6 min-h-[100vh] bg-[#f8fafc]">
+      <div className="w-full max-w-7xl bg-[#f1f5f9] p-6 md:p-10 rounded-2xl shadow-md">
+        <h1 className="text-2xl font-bold text-center text-[#1e3a8a] mb-5">
+          Enter the details below to register a new driver.
+        </h1>
+
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <Input label="First Name" name="firstName" value={formData.firstName} onChange={handleChange} error={errors.firstName} required />
           <Input label="Last Name" name="lastName" value={formData.lastName} onChange={handleChange} error={errors.lastName} required />
           <Input label="Email" name="email" value={formData.email} onChange={handleChange} error={errors.email} required />
@@ -109,18 +111,14 @@ const AddDriverForm = () => {
           <Input label="Date of Birth" name="dateOfBirth" type="date" value={formData.dateOfBirth} onChange={handleChange} />
           <Input label="License Number" name="licenseNumber" value={formData.licenseNumber} onChange={handleChange} error={errors.licenseNumber} required />
           <Input label="Experience (Years)" name="experienceYears" type="number" value={formData.experienceYears} onChange={handleChange} error={errors.experienceYears} required />
-        </div>
-
-        <h2 className="text-xl font-semibold mt-8 mb-4 text-gray-700">Address Information</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Input label="Address Line 1" name="address1" value={formData.address1} onChange={handleChange} />
           <Input label="Address Line 2" name="address2" value={formData.address2} onChange={handleChange} />
           <Input label="City" name="city" value={formData.city} onChange={handleChange} />
           <Input label="State" name="state" value={formData.state} onChange={handleChange} />
           <Input label="Zip Code" name="zipCode" value={formData.zipCode} onChange={handleChange} />
-        </div>
+        </form>
 
-        <div className="mt-8 flex justify-end space-x-4">
+        <div className="flex justify-center mt-10 gap-4">
           <Button
             type="button"
             onClick={() => navigate('/admin/drivers/view')}
@@ -131,12 +129,13 @@ const AddDriverForm = () => {
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="bg-indigo-600 hover:bg-indigo-700 text-white"
+            onClick={handleSubmit}
+            className="bg-[#1d4ed8] hover:bg-[#1e40af] text-white"
           >
             {isSubmitting ? 'Saving...' : 'Add Driver'}
           </Button>
         </div>
-      </form>
+      </div>
     </div>
   );
 };

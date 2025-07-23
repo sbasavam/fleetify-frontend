@@ -6,6 +6,8 @@ import Pagination from '../../../components/ui/Pagination';
 import { Link } from 'react-router-dom';
 import { FiEdit2, FiSearch,FiTrash2 } from 'react-icons/fi';
 import { getCompanies,deleteCompany } from '../../../services/adminService';
+import Swal from 'sweetalert2';
+
 
 
 const ViewCompanies = () => {

@@ -2,11 +2,11 @@ const HamburgerMenu = ({ onClick }) => {
   return (
     <button
       onClick={onClick}
-      className="p-2 rounded-md hover:bg-indigo-700 transition-colors focus:outline-none"
+      className="py-2 rounded-md hover:bg-gray-400 text-white transition-colors focus:outline-none"
       aria-label="Toggle menu"
     >
       <svg
-        className="w-6 h-6 text-white"
+        className="w-6 h-6"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"

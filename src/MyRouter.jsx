@@ -15,11 +15,12 @@ import EditCompany from './pages/admin/companies/EditCompany';
 import AddDriver from './pages/admin/drivers/AddDriver';
 import ViewDrivers from './pages/admin/drivers/ViewDrivers';
 import EditDriver from './pages/admin/drivers/EditDriver';
+import CreateNewUser from './pages/Admin/createNewUser'
 
 import NotFound from './pages/NotFound';
 
 const AppRouter = () => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
 
   const getRedirectPath = () => {
     if (!user) return '/login';
@@ -34,6 +35,11 @@ const AppRouter = () => {
         return '/login';
     }
   };
+
+  if (loading) {
+    // Optional: show a loader while auth is being restored
+    return <div className="p-10 text-center">Loading...</div>;
+  }
 
   return (
     <Routes>
@@ -56,6 +62,7 @@ const AppRouter = () => {
               <Route path="admin/drivers/add" element={<AddDriver />} />
               <Route path="admin/drivers/view" element={<ViewDrivers />} />
               <Route path="admin/drivers/edit/:id" element={<EditDriver />} />
+              <Route path="admin/users/create" element={<CreateNewUser />} />
             </>
           )}
 

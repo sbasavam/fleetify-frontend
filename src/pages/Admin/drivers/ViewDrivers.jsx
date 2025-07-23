@@ -24,35 +24,29 @@ const ViewDrivers = () => {
     fetchDrivers();
   }, [debouncedSearchTerm, currentPage]);
 
+
   const fetchDrivers = async () => {
-    try {
-      setLoading(true);
-      const response = await getDrivers();
-      const allDrivers = response.data;
+  try {
+    setLoading(true);
 
-      // Filter by search
-      let filtered = allDrivers;
-      if (debouncedSearchTerm) {
-        filtered = allDrivers.filter((d) =>
-          (`${d.first_name} ${d.last_name}`.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
-          d.email.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
-          d.license_number.toLowerCase().includes(debouncedSearchTerm.toLowerCase()))
-        );
-      }
+    const response = await getDrivers({
+      page: currentPage,
+      limit: itemsPerPage,
+      search: debouncedSearchTerm,
+    });
 
-      const totalItems = filtered.length;
-      const startIndex = (currentPage - 1) * itemsPerPage;
-      const paginated = filtered.slice(startIndex, startIndex + itemsPerPage);
+    const { data, pagination } = response.data;
 
-      setDrivers(paginated);
-      setTotalPages(Math.ceil(totalItems / itemsPerPage));
-    } catch (err) {
-      console.error(err);
-      setError('Failed to fetch drivers. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
+    setDrivers(data);
+    setTotalPages(pagination.totalPages);
+  } catch (err) {
+    console.error(err);
+    setError('Failed to fetch drivers. Please try again.');
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const handleDelete = async (driver) => {
     const fullName = `${driver.first_name} ${driver.last_name}`;

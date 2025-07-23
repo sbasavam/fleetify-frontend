@@ -1,7 +1,8 @@
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
-import { FiTruck, FiUsers } from "react-icons/fi";
+import { FiTruck, FiUsers, FiUserPlus } from "react-icons/fi"; // Added icon
 import clsx from "clsx";
+import Logo from "./Logo";
 
 const Sidebar = ({ isSidebarOpen }) => {
   const [openSubmenu, setOpenSubmenu] = useState({
@@ -19,20 +20,24 @@ const Sidebar = ({ isSidebarOpen }) => {
   return (
     <aside
       className={clsx(
-        "h-[calc(100vh-4rem)] mt-2 ml-2 bg-white shadow-md rounded-xl overflow-y-auto transition-all duration-300",
+        "h-screen text-gray-800 shadow-md overflow-y-auto transition-all duration-300 rounded-lg border-r border-gray-200 bg-gradient-to-br from-blue-200 via-pink-100 to-white",
         {
-          "opacity-100 w-64 px-4 py-6": isSidebarOpen,
-          "opacity-0 w-0 p-0 overflow-hidden": !isSidebarOpen,
+          "w-64 px-4": isSidebarOpen,
+          "w-0 p-0 overflow-hidden": !isSidebarOpen,
         }
       )}
     >
+      <div className="w-full flex justify-center mb-8 py-2 border-b border-gray-200">
+        <Logo className="w-40 h-auto" />
+      </div>
+
       <nav>
         <ul className="space-y-3">
           {/* Companies */}
           <li>
             <button
               onClick={() => toggleSubmenu("companies")}
-              className="w-full flex items-center justify-between p-2 rounded-md hover:bg-gray-100 text-left text-gray-700 font-medium"
+              className="w-full flex items-center justify-between p-2 rounded-md hover:bg-blue-100 text-left text-gray-700 font-medium"
             >
               <span className="flex items-center gap-2">
                 <FiUsers />
@@ -56,7 +61,7 @@ const Sidebar = ({ isSidebarOpen }) => {
             </button>
 
             {openSubmenu.companies && (
-              <ul className="ml-6 mt-1 space-y-1 text-sm">
+              <ul className="ml-6 mt-1 space-y-1 text-sm text-gray-700">
                 <li>
                   <NavLink
                     to="/admin/companies/add"
@@ -64,8 +69,8 @@ const Sidebar = ({ isSidebarOpen }) => {
                       clsx(
                         "block p-2 rounded-md",
                         isActive
-                          ? "bg-indigo-100 text-indigo-700"
-                          : "hover:bg-gray-100"
+                          ? "bg-blue-500 text-white"
+                          : "hover:bg-blue-100"
                       )
                     }
                   >
@@ -79,8 +84,8 @@ const Sidebar = ({ isSidebarOpen }) => {
                       clsx(
                         "block p-2 rounded-md",
                         isActive
-                          ? "bg-indigo-100 text-indigo-700"
-                          : "hover:bg-gray-100"
+                          ? "bg-blue-500 text-white"
+                          : "hover:bg-blue-100"
                       )
                     }
                   >
@@ -95,7 +100,7 @@ const Sidebar = ({ isSidebarOpen }) => {
           <li>
             <button
               onClick={() => toggleSubmenu("drivers")}
-              className="w-full flex items-center justify-between p-2 rounded-md hover:bg-gray-100 text-left text-gray-700 font-medium"
+              className="w-full flex items-center justify-between p-2 rounded-md hover:bg-blue-100 text-left text-gray-700 font-medium"
             >
               <span className="flex items-center gap-2">
                 <FiTruck />
@@ -119,7 +124,7 @@ const Sidebar = ({ isSidebarOpen }) => {
             </button>
 
             {openSubmenu.drivers && (
-              <ul className="ml-6 mt-1 space-y-1 text-sm">
+              <ul className="ml-6 mt-1 space-y-1 text-sm text-gray-700">
                 <li>
                   <NavLink
                     to="/admin/drivers/add"
@@ -127,8 +132,8 @@ const Sidebar = ({ isSidebarOpen }) => {
                       clsx(
                         "block p-2 rounded-md",
                         isActive
-                          ? "bg-indigo-100 text-indigo-700"
-                          : "hover:bg-gray-100"
+                          ? "bg-blue-500 text-white"
+                          : "hover:bg-blue-100"
                       )
                     }
                   >
@@ -142,8 +147,8 @@ const Sidebar = ({ isSidebarOpen }) => {
                       clsx(
                         "block p-2 rounded-md",
                         isActive
-                          ? "bg-indigo-100 text-indigo-700"
-                          : "hover:bg-gray-100"
+                          ? "bg-blue-500 text-white"
+                          : "hover:bg-blue-100"
                       )
                     }
                   >
@@ -152,6 +157,22 @@ const Sidebar = ({ isSidebarOpen }) => {
                 </li>
               </ul>
             )}
+          </li>
+
+          {/* Create User */}
+          <li>
+            <NavLink
+              to="/admin/users/create"
+              className={({ isActive }) =>
+                clsx(
+                  "flex items-center gap-2 p-2 rounded-md text-gray-700 hover:bg-blue-100",
+                  isActive ? "bg-blue-500 text-white" : ""
+                )
+              }
+            >
+              <FiUserPlus />
+              Create User
+            </NavLink>
           </li>
         </ul>
       </nav>
