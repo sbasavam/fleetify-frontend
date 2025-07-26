@@ -9,7 +9,7 @@ const DriverDashboard = () => {
     const fetchDrivers = async () => {
       try {
         const response = await getDrivers();
-        setDrivers(response.data);
+        setDrivers(response.data.data);
       } catch (error) {
         console.error("Failed to fetch drivers:", error);
       } finally {
