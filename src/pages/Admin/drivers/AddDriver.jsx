@@ -36,6 +36,7 @@ const AddDriverForm = () => {
     }
   };
 
+
   const validate = () => {
     const newErrors = {};
     if (!formData.firstName) newErrors.firstName = 'First name is required';

@@ -150,7 +150,7 @@ const handleDelete = async (id) => {
           </div>
         ) : (
           <>
-            <Table columns={columns} data={companies} />
+            <Table  columns={columns} data={companies} />
             <div className="px-6 py-4 border-t border-gray-200">
               <Pagination
                 currentPage={currentPage}

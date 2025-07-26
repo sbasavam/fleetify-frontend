@@ -27,13 +27,13 @@ const login = async (credentials) => {
       id: res.user.id,
       email: res.user.email,
       role_id: Number(res.user.role_id),
-      token: res.token, // ✅ this is correct now
+      token: res.token, 
       name: res.user.name || '',
     };
 
     localStorage.setItem('user', JSON.stringify(userData));
     setUser(userData);
-    return userData; // ✅ so Login.jsx gets the right object
+    return userData; 
   } catch (error) {
     throw new Error(error?.response?.data?.message || 'Login failed');
   }

@@ -59,7 +59,7 @@ You may also create a new Driver or Company user and log in with that to test li
 |   +---common
 |   |       Button.jsx
 |   |       Input.jsx
-|   |       Loader.jsx
+|   |    
 |   |       LoginInput.jsx
 |   |       Table.jsx
 |   |

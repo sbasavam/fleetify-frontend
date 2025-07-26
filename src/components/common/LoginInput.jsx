@@ -8,7 +8,7 @@ const Input = ({
   error = '',
   required = false,
   className = '',
-  ...props
+  ...props  
 }) => {
   return (
     <div className={`mb-4 ${className}`}>

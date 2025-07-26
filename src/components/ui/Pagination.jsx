@@ -4,36 +4,33 @@ import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   const maxVisiblePages = 5;
 
-  const getPageNumbers = () => {
-    if (totalPages <= maxVisiblePages) {
-      return Array.from({ length: totalPages }, (_, i) => i + 1);
-    }
+const getPageNumbers = () => {
+  const pages = [];
 
-    const half = Math.floor(maxVisiblePages / 2);
-    let start = Math.max(currentPage - half, 1);
-    const end = Math.min(start + maxVisiblePages - 1, totalPages);
+  if (totalPages <= maxVisiblePages) {
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
 
-    if (end - start + 1 < maxVisiblePages) {
-      start = Math.max(end - maxVisiblePages + 1, 1);
-    }
+  let start = Math.max(currentPage - 2, 1);
+  let end = Math.min(currentPage + 2, totalPages);
 
-    const pages = [];
-    for (let i = start; i <= end; i++) {
-      pages.push(i);
-    }
+  if (start > 1) {
+    pages.push(1);
+    if (start > 2) pages.push('...');
+  }
 
-    if (start > 1) {
-      if (start > 2) pages.unshift('...');
-      pages.unshift(1);
-    }
+  for (let i = start; i <= end; i++) {
+    pages.push(i);
+  }
 
-    if (end < totalPages) {
-      if (end < totalPages - 1) pages.push('...');
-      pages.push(totalPages);
-    }
+  if (end < totalPages) {
+    if (end < totalPages - 1) pages.push('...');
+    pages.push(totalPages);
+  }
 
-    return pages;
-  };
+  return pages;
+};
+
 
   const handlePageChange = (page) => {
     if (page === '...' || page === currentPage) return;

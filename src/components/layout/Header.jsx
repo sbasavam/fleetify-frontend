@@ -7,7 +7,7 @@ const Header = ({ toggleSidebar }) => {
   const { user, logout } = useAuth();
 
   return (
-    <header className="bg-gradient-to-br from-blue-200 via-pink-100 to-white text-gray-800 shadow-md sticky top-0 my-1 mx-4 rounded-lg z-10 border-b border-gray-200">
+    <header className="bg-gradient-to-br from-blue-200 via-pink-100 to-white text-gray-800 shadow-md sticky top-0 my-1 mx-6 rounded-lg z-10 border-b border-gray-200">
       <div className="px-6 py-3 flex justify-between items-center max-w-full">
         <div className="flex items-center gap-4 ">
           {user?.role_id === 1001 && (

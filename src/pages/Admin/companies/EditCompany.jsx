@@ -36,11 +36,12 @@ const EditCompany = () => {
 
         setFormData({
           companyName: data.name || '',
-          establishedOn: data.established_date || '',
+          // establishedOn: data.established_date || '',
+          establishedOn: data.established_date ? new Date(data.established_date).toISOString().split('T')[0]  : '',
           registrationNumber: data.registration_number || '',
           website: data.website || '',
           address1: data.address1 || '',
-          address2: data.address2 || '',
+          address2: data.address2 || '',  
           city: data.city || '',
           state: data.state || '',
           zipCode: data.zip_code || '',
@@ -93,7 +94,16 @@ const EditCompany = () => {
     try {
       const payload = {
         name: formData.companyName,
-        established_date: formData.establishedOn,
+        // established_date: formData.establishedOn,
+        established_date: formData.establishedOn
+  ? new Date(Date.UTC(
+      parseInt(formData.establishedOn.split('-')[0]), // year
+      parseInt(formData.establishedOn.split('-')[1]) - 1, // month (0-indexed)
+      parseInt(formData.establishedOn.split('-')[2]) // day
+    )).toISOString()
+  : null,
+
+        
         registration_number: formData.registrationNumber,
         website: formData.website,
         address1: formData.address1,

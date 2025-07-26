@@ -26,7 +26,7 @@ const Layout = () => {
       {/* Main Content */}
       <div className="flex flex-col flex-1">
         <Header toggleSidebar={toggleSidebar} />
-        <main className="flex-1 p-4 overflow-auto">
+        <main className="flex-1 p-4 overflow-auto  my-5">
           <Outlet />
         </main>
       </div>
