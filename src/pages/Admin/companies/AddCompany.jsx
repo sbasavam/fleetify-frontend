@@ -130,6 +130,7 @@ const AddCompany = () => {
               type="date"
               value={formData.establishedOn}
               onChange={handleChange}
+              required
             />
             <Input
               label="Registration Number"

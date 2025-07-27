@@ -164,6 +164,7 @@ const AddDriverForm = () => {
             type="date"
             value={formData.dateOfBirth}
             onChange={handleChange}
+            required
           />
           <Input
             label="License Number"
@@ -199,12 +200,14 @@ const AddDriverForm = () => {
             name="city"
             value={formData.city}
             onChange={handleChange}
+            required
           />
           <Input
             label="State"
             name="state"
             value={formData.state}
             onChange={handleChange}
+            required
           />
           <Input
             label="Zip Code"
