@@ -1,24 +1,24 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Input from '../../../components/common/Input';
-import Button from '../../../components/common/Button';
-import { AddCompanyToDB } from '../../../services/adminService';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Input from "../../../components/common/Input";
+import Button from "../../../components/common/Button";
+import { AddCompanyToDB } from "../../../services/adminService";
 
 const AddCompany = () => {
   const [formData, setFormData] = useState({
-    companyName: '',
-    establishedOn: '',
-    registrationNumber: '',
-    website: '',
-    address1: '',
-    address2: '',
-    city: '',
-    state: '',
-    zipCode: '',
-    primaryContactFirstName: '',
-    primaryContactLastName: '',
-    primaryContactEmail: '',
-    primaryContactMobile: ''
+    companyName: "",
+    establishedOn: "",
+    registrationNumber: "",
+    website: "",
+    address1: "",
+    address2: "",
+    city: "",
+    state: "",
+    zipCode: "",
+    primaryContactFirstName: "",
+    primaryContactLastName: "",
+    primaryContactEmail: "",
+    primaryContactMobile: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -27,15 +27,15 @@ const AddCompany = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
 
     if (errors[name]) {
-      setErrors(prev => ({
+      setErrors((prev) => ({
         ...prev,
-        [name]: ''
+        [name]: "",
       }));
     }
   };
@@ -43,14 +43,23 @@ const AddCompany = () => {
   const validate = () => {
     const newErrors = {};
 
-    if (!formData.companyName) newErrors.companyName = 'Company name is required';
-    if (!formData.registrationNumber) newErrors.registrationNumber = 'Registration number is required';
+    if (!formData.companyName)
+      newErrors.companyName = "Company name is required";
+    if (!formData.registrationNumber)
+      newErrors.registrationNumber = "Registration number is required";
+
     if (!formData.primaryContactEmail) {
-      newErrors.primaryContactEmail = 'Email is required';
+      newErrors.primaryContactEmail = "Email is required";
     } else if (!/^\S+@\S+\.\S+$/.test(formData.primaryContactEmail)) {
-      newErrors.primaryContactEmail = 'Email is invalid';
+      newErrors.primaryContactEmail = "Email is invalid";
     }
-    if (!formData.primaryContactMobile) newErrors.primaryContactMobile = 'Mobile number is required';
+
+    if (!formData.primaryContactMobile) {
+      newErrors.primaryContactMobile = "Mobile number is required";
+    } else if (!/^\d{10}$/.test(formData.primaryContactMobile)) {
+      newErrors.primaryContactMobile =
+        "Mobile number must be exactly 10 digits";
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -76,16 +85,16 @@ const AddCompany = () => {
         contact_first_name: formData.primaryContactFirstName,
         contact_last_name: formData.primaryContactLastName,
         contact_email: formData.primaryContactEmail,
-        contact_phone: formData.primaryContactMobile
+        contact_phone: formData.primaryContactMobile,
       };
 
       await AddCompanyToDB(payload);
-      navigate('/admin/companies/view');
+      navigate("/admin/companies/view");
     } catch (error) {
-      console.error('Error adding company:', error);
-      setErrors(prev => ({
+      console.error("Error adding company:", error);
+      setErrors((prev) => ({
         ...prev,
-        apiError: 'Failed to add company. Please try again.'
+        apiError: "Failed to add company. Please try again.",
       }));
     } finally {
       setLoading(false);
@@ -93,7 +102,7 @@ const AddCompany = () => {
   };
 
   return (
-    <div >
+    <div>
       <div className="w-full max-w-7xl bg-[#f1f5f9] p-4  rounded-2xl shadow-md">
         <h1 className="text-2xl font-bold text-center text-[#1e3a8a] mb-5">
           Enter the details below to register a new company.
@@ -204,8 +213,15 @@ const AddCompany = () => {
               label="Mobile"
               name="primaryContactMobile"
               type="tel"
+              maxLength={10}
               value={formData.primaryContactMobile}
-              onChange={handleChange}
+              onChange={(e) => {
+                const value = e.target.value;
+                // Allow only digits
+                if (/^\d*$/.test(value)) {
+                  handleChange(e); // update formData
+                }
+              }}
               error={errors.primaryContactMobile}
               required
             />
@@ -214,7 +230,7 @@ const AddCompany = () => {
           <div className="mt-5 flex justify-end space-x-4">
             <Button
               type="button"
-              onClick={() => navigate('/admin/companies/view')}
+              onClick={() => navigate("/admin/companies/view")}
               className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-2 rounded-lg"
             >
               Cancel
@@ -224,7 +240,7 @@ const AddCompany = () => {
               disabled={loading}
               className="bg-[#1d4ed8] hover:bg-[#2563eb] text-white px-6 py-2 rounded-lg transition-all duration-300"
             >
-              {loading ? 'Saving...' : 'Save Company'}
+              {loading ? "Saving..." : "Save Company"}
             </Button>
           </div>
         </form>
