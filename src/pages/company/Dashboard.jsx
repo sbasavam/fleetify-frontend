@@ -1,87 +1,141 @@
-import { useEffect, useState } from 'react';
-import { getCompanies } from '../../services/adminService'; // Adjust path based on your file structure
+import { useState, useEffect } from 'react';
+import { useDebounce } from '../../hooks/useDebounce';
+import Table from '../../components/common/Table';
+import Input from '../../components/common/Input';
+import Pagination from '../../components/ui/Pagination';
+import { Link } from 'react-router-dom';
+import { FiEdit2, FiSearch,FiTrash2 } from 'react-icons/fi';
+import { getCompanies,deleteCompany } from '../../services/adminService';
 
-const CompanyDashboard = () => {
+
+
+const ViewCompanies = () => {
   const [companies, setCompanies] = useState([]);
-  const [loading, setLoading] = useState(true); // <-- Added loading state
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [error, setError] = useState('');
+
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
-        setLoading(true); // Start loading
-        const response = await getCompanies();
-        if (response?.data?.success) {
-          setCompanies(response.data.data);
+        setLoading(true);
+        setError('');
+
+        const response = await getCompanies(debouncedSearchTerm, currentPage);
+        const data = response.data;
+
+        if (data.success) {
+          setCompanies(data.data);
+          setTotalPages(data.pagination.totalPages || 1);
+        } else {
+          setCompanies([]);
+          setTotalPages(1);
         }
-      } catch (error) {
-        console.error('Error fetching companies:', error);
+      } catch (err) {
+        setError('Failed to fetch companies. Please try again.');
+        setCompanies([]);
+        setTotalPages(1);
       } finally {
-        setLoading(false); // Stop loading
+        setLoading(false);
       }
     };
 
     fetchCompanies();
-  }, []);
+  }, [debouncedSearchTerm, currentPage]);
+
+
+
+const handleDelete = async (id) => {
+  if (!window.confirm('Are you sure you want to delete this company?')) return;
+
+  try {
+    setLoading(true);
+    await deleteCompany(id);
+
+    // Refresh list after delete
+    const response = await getCompanies(debouncedSearchTerm, currentPage);
+    const data = response.data;
+    if (data.success) {
+      setCompanies(data.data);
+      setTotalPages(data.pagination.totalPages || 1);
+    } else {
+      setCompanies([]);
+      setTotalPages(1);
+    }
+  } catch (error) {
+    console.error('Delete error:', error);
+    setError('Failed to delete company. Please try again.');
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+  const columns = [
+    { header: 'Company Name', accessor: 'name' },
+    { header: 'Registration Number', accessor: 'registration_number' },
+    { header: 'Contact Email', accessor: 'contact_email' },
+    { header: 'Contact Phone', accessor: 'contact_phone' },
+    { header: 'City', accessor: 'city' },
+   
+
+  ];
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">Company Dashboard</h1>
+    <div className="p-2">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold text-gray-800">Companies</h1>
+        
+      </div>
 
-      {loading ? (
-        <div className="flex justify-center items-center h-40">
-          <div className="text-blue-600 font-semibold text-lg animate-pulse">Loading companies...</div>
-        </div>
-      ) : (
-        <div className="overflow-x-auto shadow rounded-lg">
-          <table className="min-w-full bg-white text-sm border border-gray-200">
-            <thead className="bg-gray-100 text-xs font-semibold text-gray-600 uppercase">
-              <tr>
-                <th className="p-3 text-left">ID</th>
-                <th className="p-3 text-left">Name</th>
-                <th className="p-3 text-left">Established</th>
-                <th className="p-3 text-left">Reg. Number</th>
-                <th className="p-3 text-left">Website</th>
-                <th className="p-3 text-left">Address </th>
-                <th className="p-3 text-left">Contact Email</th>
-                <th className="p-3 text-left">Contact Phone</th>
-              </tr>
-            </thead>
-            <tbody className="text-gray-700">
-              {companies.map((company) => (
-                <tr key={company.id} className="border-t hover:bg-gray-50">
-                  <td className="p-3">{company.id}</td>
-                  <td className="p-3">{company.name}</td>
-                  <td className="p-3">
-                    {new Date(company.established_date).toLocaleDateString()}
-                  </td>
-                  <td className="p-3">{company.registration_number}</td>
-                  <td className="p-3">
-                    <a
-                      href={company.website}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-600 underline"
-                    >
-                      {company.website}
-                    </a>
-                  </td>
-                  <td className="p-3">{company.address1} -{company.state}</td>
-                  <td className="p-3">{company.contact_email}</td>
-                  <td className="p-3">{company.contact_phone}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      {error && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+          {error}
         </div>
       )}
 
-      {!loading && (
-        <p className="mt-6 text-sm text-gray-600 italic">
-          For any updates or to add a new company, please log in as an admin or contact the administrator.
-        </p>
-      )}
+      <div className="mb-6 relative">
+        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <FiSearch className="text-gray-400" />
+        </div>
+        <Input
+          type="text"
+          placeholder="Search companies..."
+          className="pl-10 w-full md:w-1/2"
+          value={searchTerm}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+            setCurrentPage(1);
+          }}
+        />
+      </div>
+
+      <div className="bg-white shadow-md rounded-lg overflow-hidden">
+        {loading ? (
+          <div className="p-8 text-center">Loading companies...</div>
+        ) : companies.length === 0 ? (
+          <div className="p-8 text-center text-gray-500">
+            No companies found. {debouncedSearchTerm && 'Try a different search term.'}
+          </div>
+        ) : (
+          <>
+            <Table  columns={columns} data={companies} />
+            <div className="px-6 py-4 border-t border-gray-200">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 };
 
-export default CompanyDashboard;
+export default ViewCompanies;
